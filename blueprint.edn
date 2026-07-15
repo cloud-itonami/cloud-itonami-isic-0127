@@ -1,0 +1,12 @@
+{:itonami.blueprint/id "cloud-itonami-0127"
+ :itonami.blueprint/name "Beverage Crop Plantation Operations Coordination"
+ :itonami.blueprint/isic-rev5 "0127"
+ :itonami.blueprint/domain :agriculture/beverage-crop-growing
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:food-security :rural-employment :agricultural-sustainability]
+ :itonami.blueprint/governor :beverage-operations-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :audit-ledger]
+ :itonami.blueprint/optional-technologies [:telemetry :optimization :dmn :bpmn]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented}
