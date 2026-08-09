@@ -1,0 +1,50 @@
+<html><head><meta charset="utf-8"><title>cloud-itonami-isic-0127 &middot; beverage crop growing ops</title><style>body{font:14px/1.5 -apple-system,system-ui,sans-serif;margin:0;color:#1a1a1a;background:#f5f5f5}.bar{background:#1a2a0a;color:#fff;padding:1.2rem 2rem}.bar h1{margin:0;font-size:1.15rem;font-weight:600}.badge{display:inline-block;margin-top:.4rem;font-size:.75rem;opacity:.8}main{max-width:980px;margin:1.5rem auto;padding:0 1rem}.card{background:#fff;border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}.card h2{margin-top:0;font-size:1rem}.muted{color:#777;font-size:.82rem}table{border-collapse:collapse;width:100%;font-size:.85rem}th,td{text-align:left;padding:.42rem .5rem;border-bottom:1px solid #eee}th{font-weight:600;color:#555}.ok{color:#0a7d33}.warn{color:#9a6700}.critical{color:#b41010;font-weight:600}code{background:#f0f0f0;padding:.1rem .3rem;border-radius:3px;font-size:.8rem}</style></head><body>
+<header class="bar">
+  <h1>Beverage crop growing ops (ISIC 0127) — Operator Console</h1>
+  <span class="badge">read-only sample · governor-gated · field-equipment/spray permanently blocked · crop-health always human-approved · unregistered blocks HARD-blocked</span>
+</header>
+<main>
+  <section class="card">
+    <h2>Scenario plantation blocks</h2>
+    <p class="muted">Demo snapshot — build-time-generated from <code>beverageops.store</code> via <code>beverageops.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated from the real actor. No invented data.</p>
+    <table>
+      <thead><tr><th>Plantation</th><th>Name</th><th>Crop class</th><th>Last op status</th></tr></thead>
+      <tbody>
+        <tr><td>plantation-001</td><td>Test Plantation Block</td><td>coffee</td><td><span class="critical">HARD hold &middot; plantation-count-invalid</span></td></tr>
+        <tr><td>plantation-002</td><td>East Ridge Tea Block</td><td>tea</td><td><span class="muted">no activity</span></td></tr>
+        <tr><td>plantation-ghost</td><td>(unregistered)</td><td>—</td><td><span class="critical">HARD hold &middot; plantation-not-registered</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Action gate (Beverage Operations Governor)</h2>
+    <p class="muted">HARD holds cannot be overridden. Direct field-equipment operation and spray-application finalization are permanently out of scope; unregistered plantation blocks are rejected before any human.</p>
+    <table>
+      <thead><tr><th>Op</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td><code>:log-plantation-record</code></td><td><span class="ok">phase-3 auto-commit when clean + registered + positive count</span></td></tr>
+        <tr><td><code>:schedule-field-operation</code></td><td><span class="ok">phase-3 auto-commit when clean + registered</span></td></tr>
+        <tr><td><code>:flag-crop-health-concern</code></td><td><span class="warn">ALWAYS human approval (crop safety) · never auto at any phase</span></td></tr>
+        <tr><td><code>:order-supplies</code></td><td><span class="warn">escalates above category cost threshold</span></td></tr>
+        <tr><td><code>:operate-field-equipment</code></td><td><span class="critical">HARD permanent block · grower exclusive</span></td></tr>
+        <tr><td><code>:finalize-spray-application</code></td><td><span class="critical">HARD permanent block · agronomist exclusive</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Audit ledger (this run)</h2>
+    <p class="muted">Append-only decision-fact log — every proposal, hold and commit this scenario produced from the real actor.</p>
+    <table>
+      <thead><tr><th>Fact</th><th>Op</th><th>Subject</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>committed</td><td><code>log-plantation-record</code></td><td>plantation-001</td><td>operator-submitted-record</td></tr>
+        <tr><td>committed</td><td><code>schedule-field-operation</code></td><td>plantation-001</td><td>operator-scheduling-request</td></tr>
+        <tr><td>approval-requested</td><td><code>flag-crop-health-concern</code></td><td>plantation-001</td><td></td></tr>
+        <tr><td>governor-hold</td><td><code>operate-field-equipment</code></td><td>plantation-001</td><td>field-equipment-or-spray-blocked</td></tr>
+        <tr><td>governor-hold</td><td><code>log-plantation-record</code></td><td>plantation-ghost</td><td>plantation-not-registered</td></tr>
+        <tr><td>governor-hold</td><td><code>log-plantation-record</code></td><td>plantation-001</td><td>plantation-count-invalid</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body></html>
