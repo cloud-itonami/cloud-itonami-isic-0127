@@ -2463,7 +2463,7 @@ code { font-family: var(--font-family-mono); background: var(--color-neutral-sol
         <div class="pf-pitch">
           <p>Open Occupation Blueprint for ISIC Rev. 4 0127: Growing of beverage crops.</p>
           <p>This repository implements a forkable OSS beverage-crop plantation operations coordinator: a facility-management robot manages plantation/ block record logging, field-operation (pruning/spraying/harvest) scheduling, and supply procurement under a governor-gated actor, so a beverage-crop-growing operation (coffee, tea, cacao, yerba mate plantations) keeps its own operational records and maintains full transparency over decisions.</p>
-          <p>Maturity: :implemented. src/beverageops/ implements the BeverageOpsAdvisor (beverageops.advisor) and the independent BeverageOperationsGovernor (beverageops.governor), composed by beverageops.operation following the itonami actor pattern (ADR-2607011000): advise -&gt; govern -&gt; phase-gate -&gt; commit | escalate | hold. See [Testing](#testing) below for the current green test count (clojure -M:test).</p>
+          <p>Maturity: :implemented. src/beverageops/ implements the BeverageOpsAdvisor (beverageops.advisor) and the independent BeverageOperationsGovernor (beverageops.governor), composed by beverageops.operation following the itonami actor pattern (ADR-2607011000): advise -&gt; govern -&gt; phase-gate -&gt; commit | escalate | hold. See [Testing](#testing) below for the current green test count (kbb -M:test).</p>
         </div>
       </div>
       <p class="pf-meta">Domain <code>agriculture/beverage-crop-growing</code> · Governor <code>beverage-operations-governor</code> · License <code>AGPL-3.0-or-later</code></p>
