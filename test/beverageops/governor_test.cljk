@@ -1,5 +1,5 @@
 (ns beverageops.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [beverageops.governor :as gov]
             [beverageops.store :as store]))
 
