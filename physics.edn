@@ -1,0 +1,43 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a facility-management robot keeps plantation
+;; block records, schedules field operations and handles supplies for a
+;; beverage-crop plantation (ISIC 0127, coffee, tea, cocoa). Its physical
+;; work: carrying sacks of picked coffee cherry down the hillside, pumping
+;; water to the wet mill, and sun-drying parchment coffee on the patio.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-0127"
+ :cases
+ [{:id :cherry-sacks-down-hillside
+   :kind :transport
+   :procedure "tracked carrier brings sacks of picked coffee cherry along the hillside contour path to the wet mill"
+   :params {:mass-kg 150.0 :payload-kg 240.0 :distance-m 300.0 :v-max-mps 1.2 :a-max-mps2 0.4
+            :brake-decel-mps2 0.8 :drive-force-n 1300.0 :crr 0.08
+            :cog-height-m 0.60 :support-half-length-m 0.45 :max-time-s 3600.0}
+   :sweep {:param :slope-deg :values [0.0 4.0 8.0 12.0 16.0]}
+   :quantity :cycle-time-s
+   :limit {:max 300.0 :basis "estimate: cherry reaches the wet mill within one haul so it is pulped the same day"}
+   :boundary {:lo 0.0 :hi 25.0}}
+  {:id :wet-mill-water-supply
+   :kind :pipe-flow
+   :procedure "pump lifts stream water through a 150 m pipe up to the wet mill's pulper and fermentation tanks"
+   :params {:diameter-m 0.05 :length-m 150.0 :roughness-m 1.5e-6
+            :density-kg-m3 998.0 :viscosity-pa-s 1.0e-3 :pump-efficiency 0.55 :elevation-m 15.0}
+   :sweep {:param :q-m3s :values [0.001 0.002 0.003 0.004 0.005]}
+   :quantity :pump-power-w
+   :limit {:max 1500.0 :basis "estimate: rated shaft power of a 1.5 kW small farm pump"}
+   :boundary {:lo 0.0005 :hi 0.01}}
+  {:id :parchment-on-drying-patio
+   :kind :thermal
+   :procedure "a 4 cm layer of parchment coffee lies on a sun-heated concrete patio for 6 hours; the beans in contact with the concrete are judged"
+   :params {:thickness-m 0.04 :conductivity-w-mk 0.10 :density-kg-m3 400.0 :specific-heat-j-kgk 1800.0
+            :t0-c 22.0 :h-front-w-m2k 30.0 :t-back-ambient-c 28.0 :h-back-w-m2k 10.0
+            :threshold-c 40.0 :duration-s 21600.0 :nodes 11}
+   :sweep {:param :t-hot-c :values [35.0 40.0 45.0 50.0 55.0]}
+   :quantity :final-front-c
+   :limit {:max 40.0 :basis "estimate: parchment coffee kept below ~40 C while drying to protect seed viability and cup quality (layer never raked in this model)"}
+   :boundary {:lo 30.0 :hi 70.0}}]}
